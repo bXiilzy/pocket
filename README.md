@@ -14,42 +14,7 @@ Pocket เป็นเว็บแอปพลิเคชัน **Django** ส�
 ---
 
 ## 📁 โครงสร้างโปรเจกต์
-pocket/
-📄 manage.py # Django management script
-📋 requirements.txt # Python dependencies
-🗃️ db.sqlite3 # ฐานข้อมูล SQLite
-📂 env/ # Virtual environment
-
-📂 pocket/ # 🏛️ โปรเจกต์หลัก
-⚙️ settings.py # การตั้งค่าระบบ
- 🌐 urls.py # URL routing หลัก
-🔧 wsgi.py # WSGI configuration
-🔧 asgi.py # ASGI configuration
-
-📂 wallet/ # 💰 Django app หลัก│ 🎯 models.py # โมเดลฐานข้อมูล
-👁️ views.py # Logic การทำงาน
- 🌐 urls.py # URL routing app
-🔧 admin.py # ระบบแอดมิน
-🧪 tests.py # การทดสอบ
- 📦 migrations/ # Database migrations
-
-📂 templates/ # 🎨 HTML Templates
- 🏠 base.html # Template หลัก
-🏠 home.html # หน้าหลัก
- 🔐 login.html # หน้าล็อกอิน
- 📝 register.html # หน้าสมัครสมาชิก
-
-📂 static/ # 🎭 Static Files (Development)
- 🎨 css/
-💅 style.css # CSS หลัก
- ⚡ js/
- 🚀 script.js # JS หลัก
-🖼️ images/
-📸 logo.png # โลโก้เว็บไซต์
-
-📂 staticfiles/ # 📦 Static Files (Production)
-🏭 ไฟล์ static ที่ถูกรวบรวมสำหรับ deploy
-
+![alt text](image.png)
 ## 🌐 โครงสร้างเว็บไซต์
 - **หน้า Home (`home.html`)** : แสดงรายการธุรกรรม, ยอดเงิน, เพิ่ม/ลบธุรกรรม  
 - **หน้า Login (`login.html`)** : สำหรับเข้าสู่ระบบผู้ใช้  
