@@ -9,7 +9,6 @@ import json
 from django.contrib.auth.models import User
 # Create your views here.
 
-
 @login_required
 def home(request: HttpRequest):
     if request.method == "POST":
@@ -74,6 +73,7 @@ def delete_transaction(request: HttpRequest, transaction_id: int):
     else:
         return redirect("home")  # หรือแสดงข้อความ error ก็ได้
 
+
 def login_view(request: HttpRequest):
     if request.user.is_authenticated:  # ถ้า login แล้ว ห้ามเข้า
         return redirect("home")
@@ -91,9 +91,9 @@ def login_view(request: HttpRequest):
         if request.user.is_authenticated:  # ถ้า login แล้ว ห้ามเข้า
             return redirect("home")
         return render(request, "login.html")
-    
-    
-    def register_view(request: HttpRequest):
+
+
+def register_view(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect("home")
     if request.method == "POST":
@@ -119,4 +119,6 @@ def login_view(request: HttpRequest):
         return redirect("home")
 
     return render(request, "register.html")
+
+    
 
