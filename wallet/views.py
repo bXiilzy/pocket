@@ -9,12 +9,13 @@ import json
 from django.contrib.auth.models import User
 # Create your views here.
 
-def register(request):
-    return render(request, 'register.html')
+def home(request):
+    return render(request, 'home.html')
 
 def login(request):
     return render(request, 'login.html')
 
-def home(request):
-    return render(request, 'home.html')
+def register(request):
+    return render(request, 'register.html')
+
 
