@@ -74,5 +74,49 @@ def delete_transaction(request: HttpRequest, transaction_id: int):
     else:
         return redirect("home")  # หรือแสดงข้อความ error ก็ได้
 
+def login_view(request: HttpRequest):
+    if request.user.is_authenticated:  # ถ้า login แล้ว ห้ามเข้า
+        return redirect("home")
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        print(username, password)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("home")
+        else:
+            return render(request, "login.html", {"error": "Invalid credentials"})
+    else:
+        if request.user.is_authenticated:  # ถ้า login แล้ว ห้ามเข้า
+            return redirect("home")
+        return render(request, "login.html")
+    
+    
+    def register_view(request: HttpRequest):
+    if request.user.is_authenticated:
+        return redirect("home")
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        password2 = request.POST.get("confirm")
 
+        if not username or not password:
+            return render(
+                request, "register.html", {
+                    "error": "Please fill in all fields"}
+            )
+        if password != password2:
+            return render(request, "register.html", {"error": "Passwords do not match"})
+        if User.objects.filter(username=username).exists():
+            return render(
+                request, "register.html", {"error": "Username already exists"}
+            )
+
+        # สร้าง user ใหม่
+        user = User.objects.create_user(username=username, password=password)
+        login(request, user)  # login อัตโนมัติหลังสมัครเสร็จ
+        return redirect("home")
+
+    return render(request, "register.html")
 
