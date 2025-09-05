@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-czazy9(pz!eavcpf_sa-riw@htzg!5r9nvl6^%3to(@$3@ib=0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app',
+    'localhost',
+    '127.0.0.1',]
 
 
 # Application definition
@@ -52,8 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pocket.urls'
 
-LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = "/login/"
+
 
 TEMPLATES = [
     {
@@ -72,7 +73,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pocket.wsgi.application'
 
-
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/login/"
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
