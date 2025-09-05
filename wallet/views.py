@@ -7,6 +7,7 @@ from decimal import Decimal
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.contrib.auth.models import User
+
 # Create your views here.
 
 @login_required
@@ -119,6 +120,4 @@ def register_view(request: HttpRequest):
         return redirect("home")
 
     return render(request, "register.html")
-
-    
 
