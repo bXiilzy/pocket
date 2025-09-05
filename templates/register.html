@@ -16,11 +16,11 @@
             {% csrf_token %}
             <fieldset class="fieldset">
               <label class="label" for="id_username">Username</label>
-              <input type="text" class="input" name="username" id="id_username" placeholder="Username" required />
+              <input type="text" class="input" name="username" id="id_username" placeholder="ชื้อผู้มใช้งาน" required />
               <label class="label" for="id_password">Password</label>
-              <input type="password" class="input" name="password" id="id_password" placeholder="Password" required />
+              <input type="password" class="input" name="password" id="id_password" placeholder="รหัสผ่าน" required />
               <label class="label" for="id_confirm">Confirm</label>
-              <input type="password" class="input" name="confirm" id="id_confirm" placeholder="Confirm" required />
+              <input type="password" class="input" name="confirm" id="id_confirm" placeholder="ยืนยันรหัสผ่าน" required />
               <button type="submit" class="btn btn-neutral mt-4">Register</button>
             </fieldset>
           </form>
