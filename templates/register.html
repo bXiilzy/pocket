@@ -1,7 +1,33 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="">
-    
-</div>
+<main>
+  <div class="hero bg-base-200 min-h-screen">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+      <div class="text-center lg:text-left">
+        <h1 class="text-5xl font-bold">Register now!</h1>
+        <p class="py-6">
+          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
+          quasi. In deleniti eaque aut repudiandae et a id nisi.
+        </p>
+      </div>
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div class="card-body">
+          <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <fieldset class="fieldset">
+              <label class="label" for="id_username">Username</label>
+              <input type="text" class="input" name="username" id="id_username" placeholder="Username" required />
+              <label class="label" for="id_password">Password</label>
+              <input type="password" class="input" name="password" id="id_password" placeholder="Password" required />
+              <label class="label" for="id_confirm">Confirm</label>
+              <input type="password" class="input" name="confirm" id="id_confirm" placeholder="Confirm" required />
+              <button type="submit" class="btn btn-neutral mt-4">Register</button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}
