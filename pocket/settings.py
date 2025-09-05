@@ -52,6 +52,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pocket.urls'
 
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/login/"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -68,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pocket.wsgi.application'
+
 
 
 # Database
