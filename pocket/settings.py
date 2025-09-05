@@ -78,6 +78,16 @@ WSGI_APPLICATION = 'pocket.wsgi.application'
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/login/"
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.sgkiprjfpjxapvgnxgmv',
+        'PASSWORD': os.environ.get('SUPABASE_DB_PASSWORD', 'b010105JK'),
+        'HOST': 'aws-1-ap-southeast-1.pooler.supabase.com',
+        'PORT': '5432',
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
