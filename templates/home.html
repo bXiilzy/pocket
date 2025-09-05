@@ -1,7 +1,124 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="">
-    
-</div>
+<main>
+  <div class="hero bg-base-200 min-h-screen">
+    <div class="hero-content text-center ">
+      <div class="card bg-base-100 shadow-md ">
+        <div class="card-body">
+          <div class="">
+            <form method="post" action="{% url 'home' %}" class="mb-4 flex flex-col item-center">
+              {% csrf_token %}
+              <fieldset class="fieldset">
+                <legend class="fieldset-legend text-start">Name</legend>
+                <input type="text" name="name" class="input w-full" placeholder="Type here" />
+              </fieldset>
+              <fieldset class="fieldset">
+                <legend class="fieldset-legend text-start">Description</legend>
+                <input type="text" name="description" class="input w-full" placeholder="Type here" />
+              </fieldset>
+              <fieldset class="fieldset">
+                <legend class="fieldset-legend text-start">Amount</legend>
+                <input type="number" min="1" max="9999999" name="amount" class="input w-full" placeholder="Type here" />
+              </fieldset>
+              <fieldset class="fieldset">
+                <legend class="fie ldset-legend text-start">Type</legend>
+                <select name="transaction_type" class="select w-full">
+                  <option value="1">Income</option>
+                  <option value="-1">Expense</option>
+                </select>
+                </select>
+              </fieldset>
+              <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="px-4">
+          <div class="stats shadow w-full">
+            <div class="stat">
+              <div class="stat-title">Balances | {{ user }}</div>
+              <div class="stat-value">
+                <script>
+                  const transactions = JSON.parse('{{ transactions_json|escapejs }}');
+                  document.write(new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(
+                    transactions.reduce((acc, transaction) => acc + parseFloat(transaction.amount * transaction.transaction_type), 0)
+                  ));
+                </script>
+              </div>
+              <div class="stat-desc">
+                <script>
+                  const income = transactions.reduce((acc, transaction) => transaction.transaction_type === 1 ? acc + parseFloat(transaction.amount) : acc, 0);
+                  const expense = transactions.reduce((acc, transaction) => transaction.transaction_type === -2 ? acc + parseFloat(transaction.amount) : acc, 0);
+                  document.write(Income: ${new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(income)} | Expense: ${new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(expense)});
+                </script>
+              </div>
+              <a href="{% url 'logout' %}" class="btn bg-red-500">Logout</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="overflow-x-auto h-75">
+            <table class="table">
+              <!-- head -->
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th class="">Description</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- row 1 -->
+                {% for transaction in transactions %}
+                <tr>
+                  <td>{{ transaction.name }}</td>
+                  <td>{{ transaction.description }}</td>
+                  <td>
+                    {% if transaction.transaction_type == 1 %}
+                    <div class="badge badge-success">Income</div>
+                    {% else %}
+                    <div class="badge badge-error">Expense</div>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <script>
+                      document.write(new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format({{ transaction.amount }}));
+                    </script>
+                  </td>
+                  <td>
+                    <script>
+                      document.write(
+                        new Date("{{ transaction.created_at|date:'c' }}").toLocaleString('th-TH', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit'
+                        })
+                      );
+                    </script>
+                  </td>
+                  <td>
+                    <form method="post" action="{% url 'delete_transaction' transaction.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-error btn-sm">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
 {% endblock %}
