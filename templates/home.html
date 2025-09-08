@@ -1,124 +1,255 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main>
-  <div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content text-center ">
-      <div class="card bg-base-100 shadow-md ">
-        <div class="card-body">
-          <div class="">
-            <form method="post" action="{% url 'home' %}" class="mb-4 flex flex-col item-center">
-              {% csrf_token %}
-              <fieldset class="fieldset">
-                <legend class="fieldset-legend text-start">Name</legend>
-                <input type="text" name="name" class="input w-full" placeholder="Type here" />
-              </fieldset>
-              <fieldset class="fieldset">
-                <legend class="fieldset-legend text-start">Description</legend>
-                <input type="text" name="description" class="input w-full" placeholder="Type here" />
-              </fieldset>
-              <fieldset class="fieldset">
-                <legend class="fieldset-legend text-start">Amount</legend>
-                <input type="number" min="1" max="9999999" name="amount" class="input w-full" placeholder="Type here" />
-              </fieldset>
-              <fieldset class="fieldset">
-                <legend class="fie ldset-legend text-start">Type</legend>
-                <select name="transaction_type" class="select w-full">
-                  <option value="1">Income</option>
-                  <option value="-1">Expense</option>
-                </select>
-                </select>
-              </fieldset>
-              <button type="submit" class="btn btn-primary mt-4">Submit</button>
-            </form>
-          </div>
-        </div>
-        <div class="px-4">
-          <div class="stats shadow w-full">
-            <div class="stat">
-              <div class="stat-title">Balances | {{ user }}</div>
-              <div class="stat-value">
-                <script>
-                  const transactions = JSON.parse('{{ transactions_json|escapejs }}');
-                  document.write(new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(
-                    transactions.reduce((acc, transaction) => acc + parseFloat(transaction.amount * transaction.transaction_type), 0)
-                  ));
-                </script>
-              </div>
-              <div class="stat-desc">
-                <script>
-                  const income = transactions.reduce((acc, transaction) => transaction.transaction_type === 1 ? acc + parseFloat(transaction.amount) : acc, 0);
-                  const expense = transactions.reduce((acc, transaction) => transaction.transaction_type === -2 ? acc + parseFloat(transaction.amount) : acc, 0);
-                  document.write(`Income: ${new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(income)} | Expense: ${new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(expense)}`);
-                </script>
-              </div>
-              <a href="{% url 'logout' %}" class="btn bg-red-500">Logout</a>
-            </div>
-          </div>
-        </div>
+<main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">💰 Expense Tracker</h1>
+      <p class="text-gray-600">Track your income and expenses with style</p>
+    </div>
 
-        <div class="">
-          <div class="overflow-x-auto h-75">
-            <table class="table">
-              <!-- head -->
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th class="">Description</th>
-                  <th>Type</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- row 1 -->
-                {% for transaction in transactions %}
-                <tr>
-                  <td>{{ transaction.name }}</td>
-                  <td>{{ transaction.description }}</td>
-                  <td>
-                    {% if transaction.transaction_type == 1 %}
-                    <div class="badge badge-success">Income</div>
-                    {% else %}
-                    <div class="badge badge-error">Expense</div>
-                    {% endif %}
-                  </td>
-                  <td>
-                    <script>
-                      document.write(new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format({{ transaction.amount }}));
-                    </script>
-                  </td>
-                  <td>
-                    <script>
-                      document.write(
-                        new Date("{{ transaction.created_at|date:'c' }}").toLocaleString('th-TH', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit'
-                        })
-                      );
-                    </script>
-                  </td>
-                  <td>
-                    <form method="post" action="{% url 'delete_transaction' transaction.id %}">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-error btn-sm">Delete</button>
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-                </tr>
-              </tbody>
-            </table>
+    <!-- Main Content Grid -->
+    <div class="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      
+      <!-- Left Column - Form -->
+      <div class="lg:col-span-1">
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+            <h2 class="text-2xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+              Add Transaction
+            </h2>
+            <p class="text-blue-100 mt-1">Record your financial activity</p>
+          </div>
+          
+          <div class="p-6">
+            <form method="post" action="{% url 'home' %}" class="space-y-6">
+              {% csrf_token %}
+              
+              <div class="group">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                  </svg>
+                  Name
+                </label>
+                <input type="text" name="name" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="Transaction name" />
+              </div>
+
+              <div class="group">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                  </svg>
+                  Description
+                </label>
+                <input type="text" name="description" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="Brief description" />
+              </div>
+
+              <div class="group">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                  </svg>
+                  Amount
+                </label>
+                <input type="number" min="1" max="9999999" name="amount" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="0.00" />
+              </div>
+
+              <div class="group">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                  </svg>
+                  Type
+                </label>
+                <select name="transaction_type" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white">
+                  <option value="1">💰 Income</option>
+                  <option value="-1">💸 Expense</option>
+                </select>
+              </div>
+
+              <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Add Transaction
+              </button>
+            </form>
           </div>
         </div>
       </div>
 
+      <!-- Right Column - Balance & Transactions -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Balance Card -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
+          <div class="bg-gradient-to-r from-green-500 to-teal-600 p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-2xl font-bold text-white">Account Balance</h2>
+                <p class="text-green-100">{{ user }}'s financial overview</p>
+              </div>
+              <div class="text-right">
+                <div class="text-4xl font-bold text-white">
+                  <script>
+                    const transactions = JSON.parse('{{ transactions_json|escapejs }}');
+                    document.write(new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(
+                      transactions.reduce((acc, transaction) => acc + parseFloat(transaction.amount * transaction.transaction_type), 0)
+                    ));
+                  </script>
+                </div>
+                <div class="text-green-100 mt-2">
+                  <script>
+                    const income = transactions.reduce((acc, transaction) => transaction.transaction_type === 1 ? acc + parseFloat(transaction.amount) : acc, 0);
+                    const expense = transactions.reduce((acc, transaction) => transaction.transaction_type === -1 ? acc + parseFloat(transaction.amount) : acc, 0);
+                    document.write(`💰 ${new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(income)} | 💸 ${new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(expense)}`);
+                  </script>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  <!-- Logout Button Top Right -->
+  <div class="absolute top-8 right-8 z-50">
+    <button onclick="window.location.href='{% url 'logout' %}'" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center shadow-lg">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+      </svg>
+      Logout
+    </button>
+  </div>
+
+        <!-- Transactions Table -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
+          <div class="bg-gradient-to-r from-indigo-500 to-blue-600 p-6">
+            <h2 class="text-2xl font-bold text-white flex items-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+              </svg>
+              Transaction History
+            </h2>
+            <p class="text-indigo-100 mt-1">Your recent financial activities</p>
+          </div>
+          
+          <div class="overflow-hidden">
+            <div class="overflow-x-auto max-h-96">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  {% for transaction in transactions %}
+                  <tr class="hover:bg-gray-50 transition-colors duration-150">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="font-medium text-gray-900">{{ transaction.name }}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="text-gray-600">{{ transaction.description }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      {% if transaction.transaction_type == 1 %}
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        💰 Income
+                      </span>
+                      {% else %}
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        💸 Expense
+                      </span>
+                      {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="font-semibold text-gray-900">
+                        <script>
+                          document.write(new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format({{ transaction.amount }}));
+                        </script>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <script>
+                        document.write(
+                          new Date("{{ transaction.created_at|date:'c' }}").toLocaleString('th-TH', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                          })
+                        );
+                      </script>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <form method="post" action="{% url 'delete_transaction' transaction.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-all duration-300 transform hover:scale-105 flex items-center">
+                          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                          </svg>
+                          Delete
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Floating Background Elements -->
+  <div class="fixed top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
+  <div class="fixed top-40 right-20 w-16 h-16 bg-purple-200 rounded-full opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-20 left-20 w-24 h-24 bg-green-200 rounded-full opacity-20 animate-pulse" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-40 right-10 w-12 h-12 bg-pink-200 rounded-full opacity-20 animate-pulse" style="animation-delay: 0.5s;"></div>
+
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .group:hover .group-hover\:scale-105 {
+      transform: scale(1.05);
+    }
+    
+    .backdrop-blur-sm {
+      backdrop-filter: blur(4px);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, #2563eb, #7c3aed);
+    }
+  </style>
 </main>
 {% endblock %}
