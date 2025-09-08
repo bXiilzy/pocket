@@ -5,8 +5,8 @@
   <div class="container mx-auto px-4 py-8">
     <!-- Header Section -->
     <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-gray-800 mb-2">💰 Expense Tracker</h1>
-      <p class="text-gray-600">Track your income and expenses with style</p>
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">💰Pocket</h1>
+      <p class="text-gray-600">เว็บที่ช่วยให้คุณจัดการการเงินได้อย่างมีประสิทธิภาพ</p>
     </div>
 
     <!-- Main Content Grid -->
@@ -20,9 +20,9 @@
               <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
               </svg>
-              Add Transaction
+              เพิ่มรายการ
             </h2>
-            <p class="text-blue-100 mt-1">Record your financial activity</p>
+            <p class="text-blue-100 mt-1">บันทึกกิจกรรมทางการเงินของคุณ</p>
           </div>
           
           <div class="p-6">
@@ -34,9 +34,9 @@
                   <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                   </svg>
-                  Name
+                  ชื่อ
                 </label>
-                <input type="text" name="name" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="Transaction name" />
+                <input type="text" name="name" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="ชื่อรายการ" />
               </div>
 
               <div class="group">
@@ -44,9 +44,9 @@
                   <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
                   </svg>
-                  Description
+                  รายละเอียด
                 </label>
-                <input type="text" name="description" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="Brief description" />
+                <input type="text" name="description" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="รายละเอียดสั้นๆ" />
               </div>
 
               <div class="group">
@@ -54,7 +54,7 @@
                   <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
                   </svg>
-                  Amount
+                  จำนวนเงิน
                 </label>
                 <input type="number" min="1" max="9999999" name="amount" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white" placeholder="0.00" />
               </div>
@@ -64,11 +64,11 @@
                   <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                   </svg>
-                  Type
+                  ประเภท
                 </label>
                 <select name="transaction_type" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 focus:bg-white">
-                  <option value="1">💰 Income</option>
-                  <option value="-1">💸 Expense</option>
+                  <option value="1">💰 รายได้</option>
+                  <option value="-1">💸 ค่าใช้จ่าย</option>
                 </select>
               </div>
 
@@ -92,7 +92,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <h2 class="text-2xl font-bold text-white">Account Balance</h2>
-                <p class="text-green-100">{{ user }}'s financial overview</p>
+                <p class="text-green-100">{{ user }}ข้อมูลโดยรวมของคุณ</p>
               </div>
               <div class="text-right">
                 <div class="text-4xl font-bold text-white">
@@ -131,9 +131,9 @@
               <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
               </svg>
-              Transaction History
+              รายการล่าสุด
             </h2>
-            <p class="text-indigo-100 mt-1">Your recent financial activities</p>
+            <p class="text-indigo-100 mt-1">กิจกรรมทางการเงินล่าสุดของคุณ</p>
           </div>
           
           <div class="overflow-hidden">
@@ -141,12 +141,12 @@
               <table class="w-full">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ชื่อ</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">รายละเอียด</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ประเภท</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">จำนวนเงิน</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">วันที่</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">การดำเนินการ</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
